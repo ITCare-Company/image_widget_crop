@@ -341,6 +341,12 @@ class ImageWidgetCropManager implements ImageWidgetCropInterface {
           foreach ($entity_fields->getValue() as $crop_elements) {
             foreach ($crop_elements as $crop_element) {
               if (is_array($crop_element) && isset($crop_element['crop_wrapper'])) {
+
+                // If file-id key is not available, set it same as parent elements target_id
+                if (empty($crop_element['file-id']) && !empty($crop_elements['target_id'])) {
+                  $crop_element['file-id'] = $crop_elements['target_id'];
+                }
+
                 // Reload image since its URI could have been changed,
                 // by other modules.
                 /** @var \Drupal\file_entity\Entity\FileEntity $file */
