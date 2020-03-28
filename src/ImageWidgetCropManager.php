@@ -2,6 +2,7 @@
 
 namespace Drupal\image_widget_crop;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -57,17 +58,30 @@ class ImageWidgetCropManager implements ImageWidgetCropInterface {
   protected $fileStorage;
 
   /**
+   * The ImageWidgetCrop general settings.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig
+   */
+  protected $imageWidgetCropSettings;
+
+  /**
    * Constructs a ImageWidgetCropManager object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Entity type manager service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory) {
     $this->entityTypeManager = $entity_type_manager;
     $this->cropStorage = $this->entityTypeManager->getStorage('crop');
     $this->cropTypeStorage = $this->entityTypeManager->getStorage('crop_type');
     $this->imageStyleStorage = $this->entityTypeManager->getStorage('image_style');
     $this->fileStorage = $this->entityTypeManager->getStorage('file');
+    $this->imageWidgetCropSettings = $config_factory->get('image_widget_crop.settings');
   }
 
   /**
@@ -80,7 +94,7 @@ class ImageWidgetCropManager implements ImageWidgetCropInterface {
         $crop_properties,
         $field_value,
         $crop_type,
-        FALSE
+        $this->imageWidgetCropSettings->get('settings.notify_apply')
       );
     }
   }
@@ -98,7 +112,7 @@ class ImageWidgetCropManager implements ImageWidgetCropInterface {
       }
 
       if (empty($crops)) {
-        $this->saveCrop($crop_properties, $field_value, $crop_type);
+        $this->saveCrop($crop_properties, $field_value, $crop_type, $this->imageWidgetCropSettings->get('settings.notify_update'));
         return;
       }
 
