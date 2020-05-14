@@ -20,6 +20,11 @@ class ImageWidgetCropTest extends WebDriverTestBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
    * User with permissions to create content.
    *
    * @var \Drupal\user\Entity\User

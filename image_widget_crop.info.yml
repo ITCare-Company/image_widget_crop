@@ -8,5 +8,3 @@ configure: image_widget_crop.crop_widget_settings
 dependencies:
   - crop:crop
   - drupal:image
-test_dependencies:
-  - file_entity:file_entity
