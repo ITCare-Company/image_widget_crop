@@ -23,7 +23,7 @@ class ImageWidgetCropExamplesTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'menu_ui',
     'path',
     'media',
@@ -32,7 +32,7 @@ class ImageWidgetCropExamplesTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     // Theme needs to be set before enabling image_widget_crop_examples because
     // of dependency.

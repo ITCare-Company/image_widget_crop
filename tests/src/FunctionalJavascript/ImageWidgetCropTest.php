@@ -31,8 +31,8 @@ class ImageWidgetCropTest extends WebDriverTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'image_widget_crop',
     'node',
+    'image_widget_crop',
   ];
 
   /**
@@ -95,6 +95,7 @@ class ImageWidgetCropTest extends WebDriverTestBase {
     $assert_session = $this->assertSession();
 
     $this->drupalGet('node/add/crop_test');
+
     $page->fillField('Title', $this->randomString());
     $page->attachFileToField('files[field_image_crop_test_0]', $this->container->get('file_system')->realpath(reset($images)->uri));
     $this->assertNotEmpty($assert_session->waitForField('Alternative text'));
@@ -151,6 +152,7 @@ class ImageWidgetCropTest extends WebDriverTestBase {
     $page->fillField('Title', $title);
     $page->fillField('Alternative text', $this->randomString());
     $page->pressButton('Save');
+
     $assert_session->pageTextContains('Crop test ' . $title . ' has been created.');
     $url = $this->getUrl();
     $nid = substr($url, -1, strrpos($url, '/'));
